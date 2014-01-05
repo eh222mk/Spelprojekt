@@ -13,10 +13,11 @@ namespace Mineclimber.View
         private SpriteBatch m_spriteBatch;
         private Texture2D m_startingScreenTexture;
         private Texture2D m_betweenLevelScreenTexture;
-        private Texture2D m_gameOverTexture;
+        private Texture2D m_gameFinishedTexture;
         private Camera m_camera;
         private GraphicsDevice m_graphicsDevice;
         private SpriteFont betweenLevelFont;
+        private Texture2D m_gameOverTexture;
 
         /// <summary>
         /// Constructor, loads starting screen, spritebatch & camera
@@ -29,6 +30,7 @@ namespace Mineclimber.View
             m_spriteBatch = new SpriteBatch(graphicsDevice);
             m_startingScreenTexture = content.Load<Texture2D>("badStartingScreen");
             m_betweenLevelScreenTexture = content.Load<Texture2D>("completedLevel");
+            m_gameFinishedTexture = content.Load<Texture2D>("GameFinished");
             m_gameOverTexture = content.Load<Texture2D>("GameOver");
             betweenLevelFont = content.Load<SpriteFont>("BetweenLevelFont");
             m_camera = new Camera(new Vector2(graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height));
@@ -62,6 +64,11 @@ The blue blocks are indestructable.";
             m_spriteBatch.Draw(m_betweenLevelScreenTexture, tileRectangle, Color.White);
             m_spriteBatch.DrawString(betweenLevelFont, text, textPosition, Color.Black);
             m_spriteBatch.End();
+        }
+
+        internal void DrawGameFinished()
+        {
+            DrawTexture(m_gameFinishedTexture);
         }
 
         internal void DrawGameOver()

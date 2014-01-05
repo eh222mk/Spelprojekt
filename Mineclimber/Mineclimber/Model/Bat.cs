@@ -12,11 +12,19 @@ namespace Mineclimber.Model
         private Vector2 position;
         private Vector2 size;
 
+        private float speed;
+
         public Bat(Vector2 _position, Vector2 _velocity)
         {
             velocity = _velocity;
             position = _position;
+            speed = 2f;
             size = new Vector2(0.75f, 0.5f);
+        }
+
+        internal float Speed
+        {
+            get { return speed; }
         }
 
         internal Vector2 Velocity

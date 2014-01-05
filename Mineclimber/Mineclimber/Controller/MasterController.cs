@@ -25,6 +25,7 @@ namespace Mineclimber.Controller
         CharacterController characterController;
         CharacterView characterView;
         Character character;
+        BatView batView;
 
         KeyboardState keyboardState;
 
@@ -87,7 +88,9 @@ namespace Mineclimber.Controller
             destroyedBlockSimulation = new DestroyedBlockSimulation();
             destroyedBlockView = new DestroyedBlockView(Content, GraphicsDevice);
 
-            characterController = new CharacterController(levelController.GetTiles(), audio, destroyedBlockView);
+            batView = new BatView(GraphicsDevice, Content);
+
+            characterController = new CharacterController(levelController.GetTiles(), audio, destroyedBlockView, batView);
             characterView = new CharacterView(GraphicsDevice, Content);
             camera = new Camera(new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height));
         }
@@ -139,27 +142,47 @@ namespace Mineclimber.Controller
                     audio.PlayGameMusic();
                 }
             }
-            if (gamestate == GameState.GameFinished)
+            if (gamestate == GameState.GameOver)
             {
+                betweenLevelController.GameState = GameState.GameOver;
+                betweenLevelController.UpdateStartingScreen(keyboardState);
+                gamestate = betweenLevelController.GameState;
+                if (gamestate == GameState.InGame)
+                {
+                    audio.PlayGameMusic();
+                    characterController.ResetHealth();
+                    characterController.ResetCharacterLocation();
+                    levelController.GenerateNextLevel(Currentlevel);
+                    camera.CameraPosition = camera.DefaultCameraPosition;
+                    timeSinceLevelStarted = 0;
+                    characterController.DeleteParticles();
+                    betweenLevelController.GameState = GameState.BetweenLevels;
+                }
             }
             if (gamestate == GameState.StartingScreen)
             {
                 betweenLevelController.UpdateStartingScreen(keyboardState);
                 gamestate = betweenLevelController.GameState;
                 if (gamestate == GameState.InGame)
+                {
                     Currentlevel += 1;
                     audio.PlayGameMusic();
+                    betweenLevelController.GameState = GameState.BetweenLevels;
+                }
             }
             else if (gamestate == GameState.BetweenLevels)
             {
                 betweenLevelController.UpdateBetweenLevels(keyboardState);
                 gamestate = betweenLevelController.GameState;
                 if (gamestate == GameState.InGame)
+                {
                     Currentlevel += 1;
                     audio.PlayGameMusic();
                     levelController.GenerateNextLevel(Currentlevel);
                     characterController.ResetCharacterLocation();
                     camera.CameraPosition = camera.DefaultCameraPosition;
+                    betweenLevelController.GameState = GameState.BetweenLevels;
+                }
             }
 
             if(gamestate == GameState.InGame)
@@ -167,12 +190,18 @@ namespace Mineclimber.Controller
                 timeSinceLevelStarted += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 //character movement
                 characterController.MoveCharacter(gameTime);
+                characterController.UpdateBats((float)gameTime.ElapsedGameTime.TotalSeconds);
                 character = characterController.GetCharacter();
+
+                if (character.Health <= 0)
+                {
+                    gamestate = GameState.GameOver;
+                    audio.StopGameMusic();
+                }
 
                 //Background music
                 if (TimeSinceMusicStarted >= 195)
                 {
-                    System.Diagnostics.Debug.WriteLine("Startar musiken");
                     TimeSinceMusicStarted = 0;
                     audio.PlayGameMusic();
                 }
@@ -238,6 +267,10 @@ namespace Mineclimber.Controller
             }
             if (gamestate == GameState.GameFinished)
             {
+                betweenLevelController.DrawGameFinished();
+            }
+            if (gamestate == GameState.GameOver)
+            {
                 betweenLevelController.DrawGameOver();
             }
             if (gamestate == GameState.InGame)
@@ -246,6 +279,10 @@ namespace Mineclimber.Controller
                 levelController.DrawTime(timeSinceLevelStarted, TimePosition);
                 characterController.DrawParticles(camera);
                 characterView.DrawCharacter(character, characterController.CharacterLookDirection, camera);
+                if (Currentlevel == 3)
+                {
+                    characterController.DrawBats(camera);
+                }
             }
             base.Draw(gameTime);
         }

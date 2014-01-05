@@ -129,8 +129,8 @@
     <Compile Include="Model\Level.cs" />
     <Compile Include="View\DestroyedBlockSimulation.cs" />
     <Compile Include="View\DestroyedBlockView.cs" />
-    <Compile Include="View\LevelView.cs" />
     <Compile Include="View\BetweenLevels.cs" />
+    <Compile Include="View\LevelView.cs" />
     <Compile Include="View\PauseScreen.cs" />
     <Compile Include="View\SplitterParticle.cs" />
   </ItemGroup>

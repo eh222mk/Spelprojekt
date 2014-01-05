@@ -97,7 +97,7 @@ namespace Mineclimber.Model
         internal void CharacterJump(float elapsedTime)
         {
             Vector2 direction = character.Direction;
-            direction.Y -= (character.Speed * 2f) * elapsedTime;
+            direction.Y -= (character.Speed * 2.8f) * elapsedTime;
 
             character.Direction = direction;
         }
@@ -203,7 +203,7 @@ namespace Mineclimber.Model
         }
 
 
-        private bool didCollide(Vector2 a_centerBottom, Vector2 a_size)
+        internal bool didCollide(Vector2 a_centerBottom, Vector2 a_size)
         {
             FloatRectangle occupiedArea = FloatRectangle.createFromCenterBottom(a_centerBottom, a_size);
             if (TilesCollition(occupiedArea))
@@ -345,6 +345,45 @@ namespace Mineclimber.Model
         internal void ResetCharacterLocation()
         {
             character.PositionTopLeft = character.DefaultPosition;
+        }
+
+        private float timeSinceGotHit = 0;
+        private bool canBeHit = true;
+
+        internal bool CheckBatCollision(Bat[] bats, float elapsedTime)
+        {
+            if (canBeHit)
+            {
+                FloatRectangle characterRectangle = FloatRectangle.createFromTopLeft(character.PositionTopLeft, character.Size);
+                FloatRectangle[] batRectangles = new FloatRectangle[bats.Length];
+
+                for (int i = 0; i < bats.Length; i++)
+                {
+                    batRectangles[i] = FloatRectangle.createFromTopLeft(bats[i].Position, bats[i].Size);
+
+                    if (characterRectangle.isIntersecting(batRectangles[i]))
+                    {
+                        character.Health -= 1;
+                        canBeHit = false;
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                timeSinceGotHit += elapsedTime;
+                if (timeSinceGotHit > 1)
+                {
+                    canBeHit = true;
+                    timeSinceGotHit = 0;
+                }
+            }
+            return false;
+        }
+
+        internal void ResetCharacterHealth()
+        {
+            character.Health = 3;
         }
     }
 }

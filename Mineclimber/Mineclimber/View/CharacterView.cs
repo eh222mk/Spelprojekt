@@ -16,6 +16,7 @@ namespace Mineclimber.View
         /// </summary>
         private SpriteBatch m_spriteBatch;
         private Texture2D m_characterTexture;
+        private SpriteFont lifeSprite;
 
         /// <summary>
         /// Constructor set value of the spritepatch and loads the texture
@@ -26,7 +27,7 @@ namespace Mineclimber.View
         {
             m_spriteBatch = new SpriteBatch(graphicsDevice);
             m_characterTexture = content.Load<Texture2D>("temporateminer");
-            //m_camera = new Camera(new Vector2(graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height));
+            lifeSprite = content.Load<SpriteFont>("levelTime");
         }
 
 
@@ -36,6 +37,7 @@ namespace Mineclimber.View
         /// <param name="character">The character</param>
         internal void DrawCharacter(Character character, CharacterLookDirection lookDirection, Camera m_camera)
         {
+            DrawLife(character);
             if (lookDirection == CharacterLookDirection.Right)
             {
                 Vector2 tileSize = m_camera.ConvertScale(character.Size);
@@ -57,7 +59,16 @@ namespace Mineclimber.View
                 m_spriteBatch.Begin();
                 m_spriteBatch.Draw(m_characterTexture, tileRectangle, null, Color.White, 0, new Vector2(), SpriteEffects.FlipHorizontally, 0);
                 m_spriteBatch.End();
-            }
+            }            
+        }
+
+        private void DrawLife(Character character)
+        {
+            Vector2 position = new Vector2(5, 5);
+
+            m_spriteBatch.Begin();
+            m_spriteBatch.DrawString(lifeSprite, "Life: " + character.Health, position, Color.White);
+            m_spriteBatch.End();
         }
     }
 }

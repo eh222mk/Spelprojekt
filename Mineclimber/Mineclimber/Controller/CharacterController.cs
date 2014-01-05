@@ -27,17 +27,24 @@ namespace Mineclimber.Controller
         private List<DestroyedBlockSimulation> destroyedBlockSimulation = new List<DestroyedBlockSimulation>();
         private List<SplitterParticle[]> splitterParticleArrayList = new List<SplitterParticle[]>();
 
+        private Bat[] bats;
+        private BatSimulation batSimulation;
+        private BatView batView;
+
         /// <summary>
         /// Constructor
         /// Takes the level tiles as parameter
         /// creates the charactersimulation
         /// </summary>
         /// <param name="tiles"></param>
-        public CharacterController(Tile[][] tiles, Audio _audio, DestroyedBlockView DV)
+        public CharacterController(Tile[][] tiles, Audio _audio, DestroyedBlockView DV, BatView bv)
         {
             characterSimulation = new CharacterSimulation(tiles);
             audio = _audio;
             destroyedBlockView = DV;
+            batView = bv;
+
+            batSimulation = new BatSimulation(characterSimulation);
         }
 
         /// <summary>
@@ -168,6 +175,30 @@ namespace Mineclimber.Controller
                 destroyedBlockSimulation.RemoveAt(i);
                 splitterParticleArrayList.RemoveAt(i);
             }
+        }
+
+        internal void UpdateBats(float elapsedTime)
+        {
+            if (MasterController.Currentlevel == 3)
+            {
+                batSimulation.UpdateBats(elapsedTime);
+                bats = batSimulation.GetBats();
+
+                characterSimulation.CheckBatCollision(bats, elapsedTime);
+            }
+        }
+
+        internal void DrawBats(Camera camera)
+        {
+            foreach (Bat bat in bats)
+            {
+                batView.DrawBat(bat, camera);
+            }
+        }
+
+        internal void ResetHealth()
+        {
+            characterSimulation.ResetCharacterHealth();
         }
     }
 }

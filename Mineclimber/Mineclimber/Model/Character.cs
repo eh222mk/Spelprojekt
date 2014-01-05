@@ -11,11 +11,11 @@ namespace Mineclimber.Model
         /// Fields containing character attributes
         /// </summary>
         private Vector2 m_size;
-        private int m_health = 2;
+        private int m_health = 3;
         private Vector2 m_position;
         private Vector2 direction;
         private float speed = 4f;
-        private float gravityAcceleration = 0.1f;
+        private float gravityAcceleration = 0.2f;
         private Vector2 defaultPosition = new Vector2(6f, Level.LevelHeight - 3);
 
         /// <summary>

@@ -62,6 +62,11 @@ namespace Mineclimber.Controller
             view.DrawBetweenLevels(nextLevel);
         }
 
+        internal void DrawGameFinished()
+        {
+            view.DrawGameFinished();
+        }
+
         internal void DrawGameOver()
         {
             view.DrawGameOver();

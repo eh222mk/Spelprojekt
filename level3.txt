@@ -1,4 +1,4 @@
-XBBBBXXXBBBXXXBBBBBX
+XBBBBXXBBBBBXXBBBBBX
 X                  X
 X                  X
 X       BBB        X
@@ -12,15 +12,15 @@ X      BLLL B      X
 X      B    BR     X
 X      B    B      X 
 X     LB RRRB      X
+X      B    B      X
 X      B    B     LX
 X      B    B      X
-X      B    B      X
 X     LBLLL B      X
-X           B     LX
 X           B      X
+X           B     LX
 X          B       X
 XR        B        X
-X  B     B        LX
+X        B         X
 X       B         LX
 XBBBBBBB          LX
 XBBBBBBB    B     BX
