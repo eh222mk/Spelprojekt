@@ -15,9 +15,9 @@ namespace Mineclimber.Model
         public const int LevelHeight = 65;
         public const int LevelWidth = 20;
 
-        private const string FileLocationLevel1 = @"C:\Users\eh222mk\Desktop\Mineclimber\Level.txt";
-        private const string FileLocationLevel2 = @"C:\Users\eh222mk\Desktop\Mineclimber\Level2.txt";
-        private const string FileLocationLevel3 = @"C:\Users\eh222mk\Desktop\Mineclimber\Level3.txt";
+        private const string FileLocationLevel1 = @"..\..\..\..\..\Level.txt";
+        private const string FileLocationLevel2 = @"..\..\..\..\..\Level2.txt";
+        private const string FileLocationLevel3 = @"..\..\..\..\..\Level3.txt";
 
         private Tile[][] m_tiles;
 
@@ -78,7 +78,7 @@ namespace Mineclimber.Model
         private string FindLevelLocation(int currentLevel)
         {
             if (currentLevel == 1)
-                return FileLocationLevel1;
+                return System.IO.Path.GetFullPath(FileLocationLevel1);
             else if (currentLevel == 2)
                 return FileLocationLevel2;
             else if (currentLevel == 3)
