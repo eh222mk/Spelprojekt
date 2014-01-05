@@ -80,9 +80,9 @@ namespace Mineclimber.Model
             if (currentLevel == 1)
                 return System.IO.Path.GetFullPath(FileLocationLevel1);
             else if (currentLevel == 2)
-                return FileLocationLevel2;
+                return System.IO.Path.GetFullPath(FileLocationLevel2);
             else if (currentLevel == 3)
-                return FileLocationLevel3;
+                return System.IO.Path.GetFullPath(FileLocationLevel3);
 
             
             throw new ArgumentException("Felaktig level");
