@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Xna.Framework;
+
+namespace Mineclimber.Model
+{
+    class Collision
+    {
+        Vector2 m_position = new Vector2();
+        float m_radius = 1;
+
+
+        public Collision(Vector2 a_pos, float a_radius)
+        {
+            m_position = a_pos;
+            m_radius = a_radius;
+        }
+
+        public bool DoCollide(Collision a_other)
+        {
+            Vector2 line = m_position - a_other.m_position;
+            float distance = line.Length();
+
+            if (distance < m_radius + a_other.m_radius)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
+    }
+}
